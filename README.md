@@ -2,7 +2,7 @@
 
 ## Frontend
 ### Environment
-Framework:Angular/Typescript
+Framework:Angular/Typescript  
 External APIs: Google Maps API, Ipinfo API  
 
 ### File Description
