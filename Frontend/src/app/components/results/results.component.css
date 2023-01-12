@@ -1,0 +1,130 @@
+#cardTwo{
+    width: 80%;   
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2%;
+}
+
+#cardThree {
+    width: 50%;   
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+
+#NotFound {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    color: red;
+    text-align: center;
+}
+
+table {
+    table-layout: fixed;
+}
+
+thead {
+    height: 30px;
+}
+
+tbody tr td {
+    height: 100px;
+}
+
+tbody tr:hover {
+    cursor: pointer;
+}
+
+i:hover {
+    cursor: pointer;
+}
+
+i {
+    color: rgb(65, 63, 63);
+}
+
+.pic  {
+    width: 50%;
+    height: 100%;
+}
+
+.icon {
+    height: 26px;
+    width: 26px;
+}
+
+#detail {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title {
+    font-size: medium;
+    font-weight: bold;
+}
+
+.picSlide {
+    width: 40%;
+    height: 240px;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(80%);
+}
+
+.was-validated .form-control:valid, .form-control.is-valid {
+    border-color: lightgray;
+    background-image: none;
+    padding-right: 0.75rem;
+}
+
+.form-control:focus:valid  {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 /25%);
+}
+
+.rmvUnderline {
+    text-decoration: none;
+}
+
+hr{
+    border: none;
+}
+
+@media only screen and (max-width:500px) {
+    #cardTwo{
+        width: 95%;   
+        border-radius: 2%;
+    }
+
+    tbody tr td {
+        height: 70px;
+    }
+
+    .pic{
+        width: 90%;
+        height: 100%;
+    }
+
+    #cardThree {
+        width: 95%;   
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 2%;
+    }
+
+    .picSlide {
+        width: 80%;
+        height: 240px;
+    }
+
+    #NotFound {
+        width: 70%;
+    }
+
+
+}

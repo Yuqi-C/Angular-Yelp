@@ -1,0 +1,32 @@
+<!-- empty bookings -->
+<div class="card mt-3" id="NoRes" *ngIf="reservation == null || (reservation !=null && reservation.length == 0)">
+    <h2 class="mt-0 mb-0 fw-bold">No reservations to show</h2>
+</div>
+
+<!-- show bookings -->
+<div class="mt-2" *ngIf="reservation !=null && reservation.length != 0">
+    <h2 class="text-center"><b>List of your reservations</b></h2>
+    <div class="card text-center border-light mt-4" id="cardBooking">
+        <div class="table-responsive-md">
+        <table class="table table-hover mb-0" >
+            <thead class="border-bottom">
+                <th scope="col">#</th>
+                <th scope="col">Business Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">E-mail</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of reservation; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.res_name}}</td>
+                    <td>{{item.res_date}}</td>
+                    <td>{{item.res_time}}</td>
+                    <td>{{item.res_email}}</td>
+                    <td><i class="bi bi-trash" (click)="cancelRes(i)"></i></td>
+                </tr>
+            </tbody>
+        </table>   
+    </div> 
+    </div>
+</div>

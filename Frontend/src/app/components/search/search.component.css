@@ -1,0 +1,25 @@
+
+#cardOne {
+    margin-left: auto;
+    margin-right: auto;
+    width: 47%;   
+    border-radius: 2%;
+}
+
+hr{
+    border: none;
+}
+
+.gif {
+    width: 50px; 
+    height: 50px; 
+    object-fit: cover;
+    object-position: 100% 0%;
+}
+
+@media only screen and (max-width:500px) {
+    #cardOne {
+        width: 95%;   
+    }
+
+}

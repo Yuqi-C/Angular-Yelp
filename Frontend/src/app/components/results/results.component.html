@@ -1,0 +1,210 @@
+<!-- results table -->
+<!-- No results available -->
+<div class="card mt-5 mb-5" id="NotFound" *ngIf="results.length==0">
+    <h2 class="mt-0 mb-0"><b>No results available</b></h2>
+</div>
+
+<!-- show results -->
+<div class="card text-center mt-5" id="cardTwo" *ngIf="results.length!=0 && displayRes">
+    <table class="table table-striped table-hover table-fixed mb-0" >
+        <thead class="align-middle">
+            <th scope="col" style="width:9%">#</th>
+            <th scope="col" style="width:20%">Image</th>
+            <th scope="col" style="width:36%">Business Name</th>
+            <th scope="col" style="width:21%">Rating</th>
+            <th scope="col" style="width:16%">Distance(miles)</th>
+        </thead>
+        <tbody>
+            <tr class="align-top" *ngFor="let item of results; let i=index" (click)="clickRow(item.id)">
+                <td scope="row">{{i+1}}</td>
+                <td><img class="pic img-fluid" [src]="item.image_url"></td>
+                <td>{{item.name}}</td>
+                <td>{{item.rating}}</td>
+                <td>{{getDist(item.distance)}}</td>
+            </tr>
+        </tbody>
+    </table>    
+</div>
+
+<!-- detail card -->
+<div class="card mt-5" id="cardThree" *ngIf="displayDet">
+    <i class="bi bi-arrow-left mt-3 ms-3" (click)="goBack()"></i>
+    <h1 class="text-center mb-3"><b>{{detail.name}}</b></h1>
+    <mat-tab-group mat-align-tabs="center" backgroundColor="accent">
+        <!-- information -->
+        <mat-tab label="Business details"> 
+            <div id="detail" class="row text-center align-top mt-4">
+                <div class="col-12 col-md-6">
+                    <div>
+                        <p class="title">Address
+                        <p class="info">{{detail.address}}
+                    </div>        
+                    <div class="mt-2">
+                        <p class="title">Phone
+                        <p>{{detail.phone}}</p>
+                    </div>
+                    <div class="mt-2">
+                        <p class="title">Status
+                        <p style="color:red" *ngIf="!detail.status">Closed
+                        <p style="color:green" *ngIf="detail.status">Open Now
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div>
+                        <p class="title">Category
+                        <p>{{detail.category}}
+                    </div>        
+                    <div class="mt-2">
+                        <p class="title">Price range
+                        <p>{{detail.price}}</p>
+                    </div>
+                    <div class="mt-2">    
+                        <p class="title">Visit yelp for more
+                        <p><a target="_blank" [href]="detail.link">Business link</a>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#myModal" *ngIf="!reserved">Reserve Now</button>
+                <input class="btn btn-primary" type="button" value="Cancel reservation" *ngIf="reserved" (click)="cancelBtn()">
+            </div>
+
+            <div class="container d-flex align-items-center justify-content-center mt-4">      
+                <span>Share on:
+                    <a [href]="twitter" target="_blank" class="rmvUnderline">
+                        <img class="icon" src="../../../assets/twitter.png">&nbsp;
+                    </a>   
+                    <a [href]="facebook" target="_blank" class="rmvUnderline"> 
+                        <img class="icon" src="../../../assets/facebook.png">
+                    </a>    
+                </span>
+            </div>
+
+            <!-- carousel pictures -->
+            <div id="carouselExampleControls" class="carousel slide mt-4 mb-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img [src]="detail.photos[0]" class="d-block mx-auto picSlide img-fluid">
+                    </div>
+                    <div class="carousel-item">
+                        <img [src]="detail.photos[1]" class="d-block mx-auto picSlide img-fluid">
+                    </div>
+                    <div class="carousel-item">
+                        <img [src]="detail.photos[2]" class="d-block mx-auto picSlide img-fluid">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+
+        </mat-tab>
+
+        <!-- google map -->
+        <mat-tab label="Map location">
+            <div class="my-google-map mt-4 mb-4" *ngIf="marker!=null">
+
+                <google-map width="100%" height="500px" [options]="mapOptions">
+                    <map-marker [position]="marker.position"></map-marker>
+                </google-map>
+            </div>
+        </mat-tab>
+
+        <!-- Reviews -->
+        <mat-tab label="Reviews">
+            <table class="table table-striped table-hover table-fixed mb-0" *ngIf="reviews!=null">
+                <tbody>
+                    <tr *ngFor="let item of reviews.reviews">
+                        <td scope="row">
+                            <p><b>{{item.user.name}}</b></p>
+                            <p style="margin-top: -10px">Rating: {{item.rating}}/5</p>
+                            <p>{{item.text}}</p>
+                            <p>{{item.time_created.split(' ')[0]}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>  
+        </mat-tab>
+    </mat-tab-group>
+    
+</div>
+<hr><hr>
+
+<!-- reservation form -->
+<!-- Modal -->
+<div class="modal fade" *ngIf="detail!=null" id="myModal" tabindex="0" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5 mb-1" id="myLabel"><b>Reservation form</b></h1>
+        </div>
+
+        <div class="modal-body">
+            <h3 class="text-center"><b>{{detail.name}}</b></h3>
+            <form class="row g-1" [formGroup]="reservation" (ngSubmit)="reserve()">
+                <div class="col-12">
+                    <label for="Email" class="form-label mb-0">Email</label>
+                    <input type="email" class="form-control" formControlName="myEmail" [ngClass]="{'is-invalid': submitted && f.myEmail.errors}">
+                    <div class="invalid-feedback" *ngIf="submitted && f.myEmail.errors">
+                        <div *ngIf="f.myEmail.errors?.['required']">Email is required</div>
+                        <div *ngIf="f.myEmail.errors?.['email']">Email must be a valid email address</div>
+                    </div>    
+                </div>
+
+                <div class="col-12">
+                    <label for="Date" class="form-label mb-0">Date</label>
+                    <input type="date" class="form-control" formControlName="myDate" min="{{todayDate | date:'yyyy-MM-dd'}}" [ngClass]="{'is-invalid': submitted && (f.myDate.value=='mm/dd/yyyy' || f.myDate.value==null)}">
+                    <div class="invalid-feedback" *ngIf="submitted && (f.myDate.value=='mm/dd/yyyy' || f.myDate.value==null)">
+                        <div *ngIf="f.myDate.value=='mm/dd/yyyy' || f.myDate.value==null">Date is required</div>
+                    </div>
+                </div>
+
+                <label for="Hour" class="form-label mb-0">Time</label>
+                <div class="col-3">
+                    <div class="input-group">
+                        <select class="form-control rounded" formControlName="myHour" [ngClass]="{'is-invalid': submitted && f.myHour.errors }">
+                            <option value="10">10</option> <option value="11">11</option> <option value="12">12</option>
+                            <option value="13">13</option> <option value="14">14</option> <option value="15">15</option>
+                            <option value="16">16</option> <option value="17">17</option>
+                        </select>
+                        <span class="input-group-text bg-white border-0">&nbsp;:</span>
+                        <div class="invalid-feedback" *ngIf="submitted && f.myHour.errors">
+                            <div *ngIf="f.myHour.errors?.['required']"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-2">
+                    <div class="input-group">
+                        <select class="form-control rounded" name="Min" formControlName="myMin" [ngClass]="{'is-invalid': submitted && f.myMin.errors}">
+                            <option value="00">00</option> <option value="15">15</option> 
+                            <option value="30">30</option> <option value="45">45</option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="submitted && f.myMin.errors">
+                            <div *ngIf="f.myMin.errors?.['required']"></div>
+                        </div>
+                    </div>    
+                </div>
+
+                <div class="col-2 d-flex justify-content-center align-items-center">
+                    <i class="bi bi-clock bg-white border-0"></i>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="formReset()">Close</button>
+        </div>
+        
+    </div>    
+    </div>
+</div>
