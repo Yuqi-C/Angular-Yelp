@@ -6,7 +6,7 @@ Framework: Angular(Typescript)/Bootstrap
 External APIs: Google Maps API, Ipinfo API  
 
 ### File Description
-./Android:Java/app/src/main/java/com/yuqiC includes all of the components and services needed to build the interface
+./Frontend/src/app includes all of the components and services needed to build the interface
 
 ## Backend
 ### Environment
